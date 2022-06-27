@@ -1,61 +1,51 @@
-import {gql} from "apollo-server";
+import { gql } from "apollo-server";
+import { makeExecutableSchema } from "@graphql-tools/schema";
+import { userResolvers } from "./resolvers/user.resolvers.js";
+import { orgResolvers } from "./resolvers/orgResolver.js";
+const typeDefs = gql`
+  type User {
+    # _id: String
+    email: String
+    firstName: String
+    lastName: String
+  }
 
-const typeDefs=gql`
-	type User{
-		_id: String!
-		email: String
-		firstName: String
-		lastName: String
-	}
+  input UserInput {
+    # _id: String
+    email: String
+    firstName: String
+    lastName: String
+    # password:String
+  }
 
-	type UserInput{
-		_id: String!
-		email: String
-		firstName: String
-		lastName: String
-		password:String
-		
+  type Organization {
+    name: String!
+    ownerName: String
+    email: String
+  }
+  input OrganizationInput {
+    name: String!
+    ownerName: String
+    email: String
+  }
 
-	}
-
-	type Organization {
-		_id: String!
-		name: String!
-		ownerName: String
-		createdAt: Int!
-		address: String
-	}
-	type OrganizationInput{
-		_id: String!
-		name: String!
-		ownerName: String
-		createdAt: Int!
-		address: String
-
-	}
-	
-
-	type Query{
-		#User
-		getUser(id:String): User
-		getCurrentOrganization: Organization
-
-	}
-	type Mutation {
-		# USER
-		register(
-			email: String!
-			firstName: String!
-			lastName: String!
-			password: String!
-
-		): User
-	}
-
-
-
-
+  type Query {
+    #User
+    getUser(id: String): User
+    # getOrganization(id:String): Organization
+  }
+  type Mutation {
+    # USER
+    createUser(params: UserInput): User
+    orgCreate(params: OrganizationInput): Organization
+  }
 `;
+export const resolvers = userResolvers;
+orgResolvers;
 
-
-export default typeDefs
+export const executableSchema = makeExecutableSchema({
+  resolvers: {
+    ...resolvers,
+  },
+  typeDefs,
+});

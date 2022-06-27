@@ -1,14 +1,14 @@
     
 import {ApolloServer} from 'apollo-server'
-import typeDefs from './src/graphaql/schema.js'
+import {executableSchema as schema} from './src/graphaql/schema.js'
 import connectDB from "./src/db/connectdb.js";
+// import { executableSchema} from './src/graphaql/schema.js';
 
 const DATABASE_URL= process.env.DATABASE_URL || 'mongodb://localhost:27017';
 
 connectDB(DATABASE_URL);
 
-const server = new ApolloServer({typeDefs});
-
+const server = new ApolloServer({schema});
 
 
 

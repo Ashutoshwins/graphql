@@ -1,10 +1,10 @@
 import shortid from "shortid"
+import mongoose from "mongoose"
 
-export default {
-    _id: {
-      type: String,
-      default: shortid.generate,
-    },
+export const schema = mongoose.Schema;
+
+const userSchema = new schema({
+ 
     firstName: {
       type: String,
       required: false,
@@ -13,12 +13,13 @@ export default {
       type: String,
       required: false,
     },
-    phoneNumber: {
-      type: String,
-      required: true,
-    },
+ 
     email: {
       type: String,
       required: false,
     }
-}
+})
+const userModel = mongoose.model('user', userSchema);
+export default userModel;
+
+
